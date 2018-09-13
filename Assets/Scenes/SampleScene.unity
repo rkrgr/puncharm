@@ -269,6 +269,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 300
   jumpForce: 13
+  swingVelocityAddSpeed: 10
   groundCheck: {fileID: 1960571868}
   checkRadius: 0.1
   whatIsGround:

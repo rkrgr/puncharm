@@ -7,6 +7,8 @@ public class PlayerMovement : MonoBehaviour {
     public float speed;
     public float jumpForce;
 
+    public float swingVelocityAddSpeed = 0.1f;
+
     public Transform groundCheck;
     public float checkRadius;
     public LayerMask whatIsGround;
@@ -16,12 +18,12 @@ public class PlayerMovement : MonoBehaviour {
     Rigidbody2D rb;
 
     bool jump;
-    bool grappled = true;
+    bool grappled;
     float moveInput;
     bool isFacingRight = true;
     bool isGrounded;
 
-	void Start () {
+    void Start () {
         rb = GetComponent<Rigidbody2D>();
 	}
 	
@@ -48,11 +50,13 @@ public class PlayerMovement : MonoBehaviour {
         }
         else if(grappled)
         {
-            if(moveInput != 0)
+            if(IsMovingLeft())
             {
-                // nicht jedes mal adden sondern steady
-                Vector2 move = new Vector2(moveInput * speed * Time.fixedDeltaTime, moveInput * speed * Time.fixedDeltaTime) * 0.2f;
-                rb.velocity = rb.velocity * move;
+                SwingLeft();
+            }
+            else if (IsMovingRight())
+            {
+                SwingRight();
             }
         }
         else
@@ -73,6 +77,16 @@ public class PlayerMovement : MonoBehaviour {
         {
             animator.SetFloat("VerticalVelocity", 0);
         }
+    }
+
+    private void SwingRight()
+    {
+        rb.velocity = new Vector2(rb.velocity.x + swingVelocityAddSpeed * Time.fixedDeltaTime, rb.velocity.y);
+    }
+
+    private void SwingLeft()
+    {
+        rb.velocity = new Vector2(rb.velocity.x - swingVelocityAddSpeed * Time.fixedDeltaTime, rb.velocity.y);
     }
 
     bool IsFacingLeft()

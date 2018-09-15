@@ -45,23 +45,15 @@ public class PlayerMovement : MonoBehaviour {
 
         if (jump && isGrounded)
         {
-            rb.velocity = Vector2.up * jumpForce;
-            jump = false;
+            Jump();
         }
         else if(grappled)
         {
-            if(IsMovingLeft())
-            {
-                SwingLeft();
-            }
-            else if (IsMovingRight())
-            {
-                SwingRight();
-            }
+            Swing();
         }
         else
         {
-            rb.velocity = new Vector2(moveInput * speed * Time.fixedDeltaTime, rb.velocity.y);
+            Move();
         }
 
         if (isFacingRight && IsMovingLeft() || IsFacingLeft() && IsMovingRight())
@@ -77,6 +69,29 @@ public class PlayerMovement : MonoBehaviour {
         {
             animator.SetFloat("VerticalVelocity", 0);
         }
+    }
+
+    private void Swing()
+    {
+        if (IsMovingLeft())
+        {
+            SwingLeft();
+        }
+        else if (IsMovingRight())
+        {
+            SwingRight();
+        }
+    }
+
+    private void Jump()
+    {
+        rb.velocity = Vector2.up * jumpForce;
+        jump = false;
+    }
+
+    private void Move()
+    {
+        rb.velocity = new Vector2(moveInput * speed * Time.fixedDeltaTime, rb.velocity.y);
     }
 
     private void SwingRight()

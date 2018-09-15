@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour {
     Rigidbody2D rb;
 
     int moveDirection = moveLeft;
+    bool isFacingLeft = true;
 
     void Start () {
         rb = GetComponent<Rigidbody2D>();
@@ -32,6 +33,33 @@ public class Enemy : MonoBehaviour {
 
     void FixedUpdate()
     {
+        if (isFacingLeft && IsMovingRight() || IsFacingRight() && IsMovingLeft())
+        {
+            FlipCharacter();
+        }
         rb.velocity = new Vector2(moveDirection * speed * Time.fixedDeltaTime, rb.velocity.y);
+    }
+
+    bool IsFacingRight()
+    {
+        return !isFacingLeft;
+    }
+
+    bool IsMovingLeft()
+    {
+        return moveDirection == moveLeft;
+    }
+
+    bool IsMovingRight()
+    {
+        return moveDirection == moveRight;
+    }
+
+    void FlipCharacter()
+    {
+        isFacingLeft = !isFacingLeft;
+        Vector3 scale = transform.localScale;
+        scale.x = -scale.x;
+        transform.localScale = scale;
     }
 }

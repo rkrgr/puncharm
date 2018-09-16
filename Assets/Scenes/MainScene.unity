@@ -201,6 +201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ff360bb274e121429240c5844fab80b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mouseControle: 0
   positionOffset: {x: 0, y: -0.4}
   rotationOffset: 90
   player: {fileID: 495469496}

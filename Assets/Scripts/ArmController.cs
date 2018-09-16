@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ArmController : MonoBehaviour {
 
+    public bool mouseControle = true;
+
     public Vector2 positionOffset;
     public float rotationOffset;
 
@@ -23,8 +25,9 @@ public class ArmController : MonoBehaviour {
 
         if(!isPunching)
         {
-            Vector3 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-            float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+            Vector2 armDirection = mouseControle    ? Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position 
+                                                    : new Vector3(Input.GetAxisRaw("RightJoystickHorizontal"), -Input.GetAxisRaw("RightJoystickVertical"));
+            float rotZ = Mathf.Atan2(armDirection.y, armDirection.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0f, 0f, rotZ + rotationOffset);
 
             if (Input.GetButtonDown("Fire1"))

@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4291553035227396}
   - component: {fileID: 212201425454958912}
   - component: {fileID: 95261001562875234}
+  - component: {fileID: 114251803453467762}
   m_Layer: 0
   m_Name: PunchImpact
   m_TagString: Untagged
@@ -59,6 +60,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114251803453467762
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1990545803018642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f625f52eeb0c5944b222768f5454125, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyAfter: 0.3
 --- !u!212 &212201425454958912
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -201,10 +201,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787e3a00ace5f2949887bcba966fb580, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseControle: 1
+  mouseControle: 0
   positionOffset: {x: 0, y: 0}
   rotationOffset: 90
   player: {fileID: 495469496}
+  collideWith:
+  - Obstacle
+  collideDistanceOffset: 2
 --- !u!1 &258827288
 GameObject:
   m_ObjectHideFlags: 0

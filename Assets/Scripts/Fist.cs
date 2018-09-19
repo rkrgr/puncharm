@@ -11,9 +11,9 @@ public class Fist : MonoBehaviour {
 
     public int damage;
 
-    bool isPunching = false;
-    float fistDistance;
-    Vector3 initialFistPosition;
+    internal bool isPunching = false;
+    internal float fistDistance;
+    internal Vector3 initialFistPosition;
     bool fistExpanding;
 
     void Start()
@@ -32,6 +32,7 @@ public class Fist : MonoBehaviour {
         if (isPunching)
         {
             fistDistance = Vector3.Distance(initialFistPosition, transform.localPosition);
+
             if (fistExpanding && fistDistance >= punchDistance)
             {
                 fistExpanding = false;

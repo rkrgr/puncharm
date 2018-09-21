@@ -17,7 +17,6 @@ public class Punch : MonoBehaviour {
     public int damage;
 
     public Transform aimMark;
-    public Transform fist;
 
     internal bool isPunching = false;
     bool isFistExpanding = false;
@@ -27,7 +26,7 @@ public class Punch : MonoBehaviour {
 
     void Start()
     {
-        initialLocalFistPosition = fist.localPosition;
+        initialLocalFistPosition = transform.localPosition;
     }
 
     void Update()
@@ -52,7 +51,6 @@ public class Punch : MonoBehaviour {
         
         if(!isPunching && !isLoading)
         {
-
             aimMark.localPosition = initialLocalFistPosition;
             aimMark.Translate(Vector3.down * minPunchDistance);
         }
@@ -69,18 +67,18 @@ public class Punch : MonoBehaviour {
         {
             if (isFistExpanding)
             {
-                fist.position = Vector2.MoveTowards(fist.position, aimMark.position, punchSpeed * Time.fixedDeltaTime);
+                transform.position = Vector2.MoveTowards(transform.position, aimMark.position, punchSpeed * Time.fixedDeltaTime);
 
-                if(fist.position == aimMark.position)
+                if(transform.position == aimMark.position)
                 {
                     isFistExpanding = false;
                 }
             }
             else
             {
-                fist.localPosition = Vector2.MoveTowards(fist.localPosition, initialLocalFistPosition, punchSpeed * Time.fixedDeltaTime);
+                transform.localPosition = Vector2.MoveTowards(transform.localPosition, initialLocalFistPosition, punchSpeed * Time.fixedDeltaTime);
 
-                if (fist.localPosition == initialLocalFistPosition)
+                if (transform.localPosition == initialLocalFistPosition)
                 {
                     isPunching = false;
                 }
@@ -88,19 +86,16 @@ public class Punch : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter2D(Collider2D hitInfo)
+    void OnTriggerEnter2D(Collider2D col)
     {
-        if(hitInfo.gameObject.layer == 9)
-        {
-            isFistExpanding = false;
-        }
-
-        Enemy enemy = hitInfo.GetComponent<Enemy>();
+        Enemy enemy = col.GetComponent<Enemy>();
         if (enemy != null && isFistExpanding)
         {
             enemy.TakeDamage(damage);
             Instantiate(impactEffect, transform.position, transform.rotation);
             isFistExpanding = false;
         }
+
+        isFistExpanding = false;
     }
 }

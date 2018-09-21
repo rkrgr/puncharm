@@ -123,7 +123,6 @@ GameObject:
   - component: {fileID: 170809357}
   - component: {fileID: 170809356}
   - component: {fileID: 170809358}
-  - component: {fileID: 170809361}
   m_Layer: 8
   m_Name: Arm
   m_TagString: Player
@@ -207,26 +206,6 @@ MonoBehaviour:
   rotationOffset: 90
   player: {fileID: 495469496}
   aimMark: {fileID: 1347637786}
---- !u!114 &170809361
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 170809355}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e623560891f84ce40a56724169afb524, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  impactEffect: {fileID: 1990545803018642, guid: d41405691842af24d9ed9eb9a121dd40,
-    type: 2}
-  punchSpeed: 25
-  punchLoadSpeed: 5
-  minPunchDistance: 1
-  maxPunchDistance: 3
-  damage: 40
-  aimMark: {fileID: 1347637786}
-  fist: {fileID: 274827084}
 --- !u!1 &258827288
 GameObject:
   m_ObjectHideFlags: 0
@@ -279,6 +258,7 @@ GameObject:
   - component: {fileID: 274827088}
   - component: {fileID: 274827087}
   - component: {fileID: 274827086}
+  - component: {fileID: 274827085}
   m_Layer: 8
   m_Name: Fist
   m_TagString: Player
@@ -299,6 +279,25 @@ Transform:
   m_Father: {fileID: 170809357}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &274827085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 274827083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e623560891f84ce40a56724169afb524, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  impactEffect: {fileID: 1990545803018642, guid: d41405691842af24d9ed9eb9a121dd40,
+    type: 2}
+  punchSpeed: 25
+  punchLoadSpeed: 5
+  minPunchDistance: 1
+  maxPunchDistance: 3
+  damage: 40
+  aimMark: {fileID: 1347637786}
 --- !u!50 &274827086
 Rigidbody2D:
   serializedVersion: 4
@@ -5312,7 +5311,7 @@ GameObject:
   - component: {fileID: 858839244}
   - component: {fileID: 858839243}
   - component: {fileID: 858839245}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Opossum
   m_TagString: Enemy
   m_Icon: {fileID: 0}

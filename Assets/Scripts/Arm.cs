@@ -15,12 +15,7 @@ public class Arm : MonoBehaviour {
 
     void Awake()
     {
-        punch = gameObject.GetComponent<Punch>();
-    }
-
-    void Start()
-    {
-        Physics2D.IgnoreLayerCollision(8, 8);
+        punch = gameObject.GetComponentInChildren<Punch>();
     }
 
 	void Update ()

@@ -5,18 +5,17 @@ using UnityEngine;
 public class Punch : MonoBehaviour {
 
     public GameObject impactEffect;
+    public Transform aimMark;
 
     public float punchSpeed;
-    public float punchLoadSpeed;
+    public int damage;
 
+
+    public float punchLoadSpeed;
     public float minPunchDistance;
     public float maxPunchDistance;
 
-    private float currentAimDistance;
-
-    public int damage;
-
-    public Transform aimMark;
+    float currentAimDistance;
 
     internal bool isPunching = false;
     bool isFistExpanding = false;
@@ -31,52 +30,68 @@ public class Punch : MonoBehaviour {
 
     void Update()
     {
-        if (!isPunching && Input.GetMouseButtonDown(0))
+        if(!isPunching)
         {
-            isLoading = true;
-        }
+            if (!isLoading)
+            {
+                ResetAimMarkPosition();
+            }
 
-        if (!isPunching && Input.GetMouseButtonUp(0))
-        {
-            aimMarkPos = aimMark.position;
-            isPunching = true;
-            isFistExpanding = true;
-            isLoading = false;
+            if (Input.GetMouseButtonDown(0))
+            {
+                InitiateLoad();
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                InitiatePunch();
+            }
         }
-
-        if (isPunching)
+        else
         {
             aimMark.position = aimMarkPos;
         }
-        
-        if(!isPunching && !isLoading)
-        {
-            aimMark.localPosition = initialLocalFistPosition;
-            aimMark.Translate(Vector3.down * minPunchDistance);
-        }
+    }
+
+    private void ResetAimMarkPosition()
+    {
+        aimMark.localPosition = initialLocalFistPosition;
+        aimMark.Translate(Vector3.down * minPunchDistance);
+    }
+
+    private void InitiateLoad()
+    {
+        isLoading = true;
+    }
+
+    private void InitiatePunch()
+    {
+        aimMarkPos = aimMark.position;
+        isPunching = true;
+        isFistExpanding = true;
+        isLoading = false;
     }
 
     void FixedUpdate()
     {
-        if (isLoading)
+        if (isLoading && IsAimMarkInPunchRange())
         {
-            aimMark.Translate(Vector3.down * punchLoadSpeed * Time.fixedDeltaTime);
+            LoadAim();
         }
 
         if (isPunching)
         {
             if (isFistExpanding)
             {
-                transform.position = Vector2.MoveTowards(transform.position, aimMark.position, punchSpeed * Time.fixedDeltaTime);
+                ExpandFist();
 
-                if(transform.position == aimMark.position)
+                if (transform.position == aimMark.position)
                 {
                     isFistExpanding = false;
                 }
             }
             else
             {
-                transform.localPosition = Vector2.MoveTowards(transform.localPosition, initialLocalFistPosition, punchSpeed * Time.fixedDeltaTime);
+                ContractFist();
 
                 if (transform.localPosition == initialLocalFistPosition)
                 {
@@ -86,7 +101,38 @@ public class Punch : MonoBehaviour {
         }
     }
 
+    private void ExpandFist()
+    {
+        transform.position = Vector2.MoveTowards(transform.position, aimMark.position, punchSpeed * Time.fixedDeltaTime);
+    }
+
+    private void ContractFist()
+    {
+        transform.localPosition = Vector2.MoveTowards(transform.localPosition, initialLocalFistPosition, punchSpeed * Time.fixedDeltaTime);
+    }
+
+    private void LoadAim()
+    {
+        aimMark.Translate(Vector3.down * punchLoadSpeed * Time.fixedDeltaTime);
+    }
+
+    private bool IsAimMarkInPunchRange()
+    {
+        // use sqrMagnitude and not magnitude for distance checks because it performs better
+        return (initialLocalFistPosition - aimMark.localPosition).sqrMagnitude < maxPunchDistance * maxPunchDistance;
+    }
+
     void OnTriggerEnter2D(Collider2D col)
+    {
+        FistCollide(col);
+    }
+
+    void OnTriggerStay2D(Collider2D col)
+    {
+        FistCollide(col);
+    }
+
+    void FistCollide(Collider2D col)
     {
         Enemy enemy = col.GetComponent<Enemy>();
         if (enemy != null && isFistExpanding)

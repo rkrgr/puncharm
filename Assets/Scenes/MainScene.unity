@@ -292,12 +292,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   impactEffect: {fileID: 1990545803018642, guid: d41405691842af24d9ed9eb9a121dd40,
     type: 2}
+  aimMark: {fileID: 1347637786}
   punchSpeed: 25
+  damage: 40
   punchLoadSpeed: 5
   minPunchDistance: 1
-  maxPunchDistance: 3
-  damage: 40
-  aimMark: {fileID: 1347637786}
+  maxPunchDistance: 18
 --- !u!50 &274827086
 Rigidbody2D:
   serializedVersion: 4

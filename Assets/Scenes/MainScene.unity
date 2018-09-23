@@ -292,7 +292,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   impactEffect: {fileID: 1990545803018642, guid: d41405691842af24d9ed9eb9a121dd40,
     type: 2}
-  aimMark: {fileID: 1347637786}
+  loadMark: {fileID: 1347637785}
   punchSpeed: 25
   damage: 40
   punchLoadSpeed: 5
@@ -5559,7 +5559,7 @@ GameObject:
   - component: {fileID: 1347637786}
   - component: {fileID: 1347637787}
   m_Layer: 5
-  m_Name: AimMark
+  m_Name: LoadMark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

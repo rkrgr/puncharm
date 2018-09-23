@@ -5,7 +5,7 @@ using UnityEngine;
 public class Punch : MonoBehaviour {
 
     public GameObject impactEffect;
-    public Transform aimMark;
+    public GameObject loadMark;
 
     public float punchSpeed;
     public int damage;
@@ -15,16 +15,17 @@ public class Punch : MonoBehaviour {
     public float minPunchDistance;
     public float maxPunchDistance;
 
-    float currentAimDistance;
+    float currentLoadDistance;
 
     internal bool isPunching = false;
     bool isFistExpanding = false;
     bool isLoading = false;
     Vector3 initialLocalFistPosition;
-    Vector2 aimMarkPos;
+    Vector2 loadMarkPos;
 
     void Start()
     {
+        loadMark.SetActive(false);
         initialLocalFistPosition = transform.localPosition;
     }
 
@@ -39,23 +40,25 @@ public class Punch : MonoBehaviour {
 
             if (Input.GetMouseButtonDown(0))
             {
+                loadMark.SetActive(true);
                 InitiateLoad();
             }
             else if (Input.GetMouseButtonUp(0))
             {
+                loadMark.SetActive(false);
                 InitiatePunch();
             }
         }
         else
         {
-            aimMark.position = aimMarkPos;
+            loadMark.transform.position = loadMarkPos;
         }
     }
 
     private void ResetAimMarkPosition()
     {
-        aimMark.localPosition = initialLocalFistPosition;
-        aimMark.Translate(Vector3.down * minPunchDistance);
+        loadMark.transform.localPosition = initialLocalFistPosition;
+        loadMark.transform.Translate(Vector3.down * minPunchDistance);
     }
 
     private void InitiateLoad()
@@ -65,7 +68,7 @@ public class Punch : MonoBehaviour {
 
     private void InitiatePunch()
     {
-        aimMarkPos = aimMark.position;
+        loadMarkPos = loadMark.transform.position;
         isPunching = true;
         isFistExpanding = true;
         isLoading = false;
@@ -84,7 +87,7 @@ public class Punch : MonoBehaviour {
             {
                 ExpandFist();
 
-                if (transform.position == aimMark.position)
+                if (transform.position == loadMark.transform.position)
                 {
                     isFistExpanding = false;
                 }
@@ -103,7 +106,7 @@ public class Punch : MonoBehaviour {
 
     private void ExpandFist()
     {
-        transform.position = Vector2.MoveTowards(transform.position, aimMark.position, punchSpeed * Time.fixedDeltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, loadMark.transform.position, punchSpeed * Time.fixedDeltaTime);
     }
 
     private void ContractFist()
@@ -113,13 +116,13 @@ public class Punch : MonoBehaviour {
 
     private void LoadAim()
     {
-        aimMark.Translate(Vector3.down * punchLoadSpeed * Time.fixedDeltaTime);
+        loadMark.transform.Translate(Vector3.down * punchLoadSpeed * Time.fixedDeltaTime);
     }
 
     private bool IsAimMarkInPunchRange()
     {
         // use sqrMagnitude and not magnitude for distance checks because it performs better
-        return (initialLocalFistPosition - aimMark.localPosition).sqrMagnitude < maxPunchDistance * maxPunchDistance;
+        return (initialLocalFistPosition - loadMark.transform.localPosition).sqrMagnitude < maxPunchDistance * maxPunchDistance;
     }
 
     void OnTriggerEnter2D(Collider2D col)

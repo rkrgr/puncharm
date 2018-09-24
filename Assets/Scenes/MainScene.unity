@@ -544,7 +544,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 300
-  jumpForce: 16
+  jumpForce: 10
+  fallMultiplier: 2
+  lowJumpMultiplier: 1.5
   swingVelocityAddSpeed: 10
   groundCheck: {fileID: 1960571868}
   checkRadius: 0.1

@@ -19,15 +19,17 @@ public class PlayerMovement : MonoBehaviour {
     public Animator animator;
 
     Rigidbody2D rb;
+    FistAttack fistAttack;
 
     bool jump;
     bool grappled;
     float moveInput;
-    bool isFacingRight = true;
+    internal bool isFacingRight = true;
     bool isGrounded;
 
-    void Start () {
+    void Awake () {
         rb = GetComponent<Rigidbody2D>();
+        fistAttack = GetComponent<FistAttack>();
 	}
 	
     void Update()
@@ -116,7 +118,7 @@ public class PlayerMovement : MonoBehaviour {
         rb.velocity = new Vector2(rb.velocity.x - swingVelocityAddSpeed * Time.fixedDeltaTime, rb.velocity.y);
     }
 
-    bool IsFacingLeft()
+    public bool IsFacingLeft()
     {
         return !isFacingRight;
     }
@@ -133,9 +135,12 @@ public class PlayerMovement : MonoBehaviour {
 
     void FlipCharacter()
     {
-        isFacingRight = !isFacingRight;
-        Vector3 scaler = transform.localScale;
-        scaler.x = -scaler.x;
-        transform.localScale = scaler;
+        if (!fistAttack.IsPunching())
+        {
+            isFacingRight = !isFacingRight;
+            Vector3 scaler = transform.localScale;
+            scaler.x = -scaler.x;
+            transform.localScale = scaler;
+        }
     }
 }

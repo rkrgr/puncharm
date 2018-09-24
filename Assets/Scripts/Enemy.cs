@@ -12,12 +12,17 @@ public class Enemy : MonoBehaviour {
 
     public float speed;
 
+    public float hitCooldown = 1f;
+    public Vector2 pushBack = new Vector2(300, 800);
+
     public Rigidbody2D player;
 
     Rigidbody2D rb;
 
     int moveDirection = moveLeft;
     bool isFacingLeft = true;
+
+    float currentHitCooldown = 0;
 
     void Start () {
         rb = GetComponent<Rigidbody2D>();
@@ -40,7 +45,12 @@ public class Enemy : MonoBehaviour {
         {
             FlipCharacter();
         }
-        rb.velocity = new Vector2(moveDirection * speed * Time.fixedDeltaTime, rb.velocity.y);
+
+        currentHitCooldown -= Time.deltaTime;
+        if(currentHitCooldown <= 0)
+        {
+            rb.velocity = new Vector2(moveDirection * speed * Time.deltaTime, rb.velocity.y);
+        }
     }
 
     bool IsFacingRight()
@@ -68,10 +78,26 @@ public class Enemy : MonoBehaviour {
 
     public void TakeDamage(int damage)
     {
-        health -= damage;
-        if(health <= 0)
+        if(currentHitCooldown <= 0)
         {
-            Die();
+            health -= damage;
+            if(health <= 0)
+            {
+                Die();
+                return;
+            }
+        }
+
+        currentHitCooldown = hitCooldown;
+
+        rb.velocity = Vector2.zero;
+        if(isFacingLeft)
+        {
+            rb.AddForce(pushBack);
+        }
+        else
+        {
+            rb.AddForce(new Vector2(-pushBack.x, pushBack.y));
         }
     }
 

@@ -75,11 +75,6 @@ public class FistAttack : MonoBehaviour {
         }
     }
 
-    void OnTriggerEnter2D()
-    {
-
-    }
-
     void Punch()
     {
         isExpanding = true;
@@ -97,6 +92,12 @@ public class FistAttack : MonoBehaviour {
     public bool IsPunching()
     {
         return isExpanding || isRetracting;
+    }
+
+    public void CollideWithWall()
+    {
+        isExpanding = false;
+        isRetracting = true;
     }
 
 }

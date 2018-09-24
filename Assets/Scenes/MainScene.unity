@@ -223,7 +223,7 @@ GameObject:
   - component: {fileID: 495469501}
   m_Layer: 8
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -367,7 +367,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fistPrefab: {fileID: 1385126438049314, guid: 94e00cb16e84c7e45a05053779cbb1e0, type: 2}
-  offset: 1
+  offset: 0
   speed: 20
   maxDistance: 5
 --- !u!95 &495469500

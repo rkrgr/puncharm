@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212960417792741228}
   - component: {fileID: 50663325346609278}
   - component: {fileID: 58412220332224308}
+  - component: {fileID: 114414236508615740}
   m_Layer: 8
   m_Name: Fist
   m_TagString: Player
@@ -77,6 +78,17 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.81
+--- !u!114 &114414236508615740
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1385126438049314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f0176dce15a24c419351520f3a20b78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212960417792741228
 SpriteRenderer:
   m_ObjectHideFlags: 1

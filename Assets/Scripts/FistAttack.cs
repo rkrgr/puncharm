@@ -75,6 +75,11 @@ public class FistAttack : MonoBehaviour {
         }
     }
 
+    void OnTriggerEnter2D()
+    {
+
+    }
+
     void Punch()
     {
         isExpanding = true;

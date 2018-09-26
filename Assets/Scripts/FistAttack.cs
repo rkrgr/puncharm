@@ -197,54 +197,56 @@ public class FistAttack : MonoBehaviour {
             }
         }
 
-        if (!IsPunching() && Input.GetButtonDown("Fire1"))
+        if (!IsPunching())
         {
-            float verticalInput = Input.GetAxisRaw("Vertical");
-            float horizontalInput = Input.GetAxisRaw("Horizontal");
-            if (verticalInput > 0.5f)
+            if (Input.GetButtonDown("PunchUpLeft"))
             {
-                if(horizontalInput > 0.5f)
-                {
-                    punchDirection = PunchDirection.UPRIGHT;
-                }
-                else if(horizontalInput < -0.5f)
-                {
-                    punchDirection = PunchDirection.UPLEFT;
-                }
-                else
+                punchDirection = PunchDirection.UPLEFT;
+                Punch();
+            }
+            else if (Input.GetButtonDown("PunchUpRight"))
+            {
+                punchDirection = PunchDirection.UPRIGHT;
+                Punch();
+            }
+            else if(Input.GetButtonDown("Punch"))
+            {
+                float verticalInput = Input.GetAxisRaw("Vertical");
+                float horizontalInput = Input.GetAxisRaw("Horizontal");
+
+                if (verticalInput > 0.5f)
                 {
                     punchDirection = PunchDirection.UP;
                 }
-            }
-            else if (verticalInput < -0.5f)
-            {
-                if (horizontalInput > 0.5f)
+                else if (verticalInput < -0.5f)
                 {
-                    punchDirection = PunchDirection.DOWNRIGHT;
-                }
-                else if (horizontalInput < -0.5f)
-                {
-                    punchDirection = PunchDirection.DOWNLEFT;
-                }
-                else
-                {
-                    punchDirection = PunchDirection.DOWN;
-                }
-            }
-            else
-            {
-                if (movement.IsFacingLeft())
-                {
-                    punchDirection = PunchDirection.LEFT;
+                    if (horizontalInput > 0.5f)
+                    {
+                        punchDirection = PunchDirection.DOWNRIGHT;
+                    }
+                    else if (horizontalInput < -0.5f)
+                    {
+                        punchDirection = PunchDirection.DOWNLEFT;
+                    }
+                    else
+                    {
+                        punchDirection = PunchDirection.DOWN;
+                    }
                 }
                 else
                 {
-                    punchDirection = PunchDirection.RIGHT;
+                    if (movement.IsFacingLeft())
+                    {
+                        punchDirection = PunchDirection.LEFT;
+                    }
+                    else
+                    {
+                        punchDirection = PunchDirection.RIGHT;
+                    }
                 }
+                Punch();
             }
-            Punch();
         }
-
         oldPlayerPos = transform.position;
     }
 

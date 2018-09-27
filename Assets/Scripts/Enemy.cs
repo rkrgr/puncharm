@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour {
     public int health = 100;
 
     public float speed;
+    public int damage;
 
     public float hitCooldown = 1f;
 

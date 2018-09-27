@@ -136,6 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   speed: 200
+  damage: 20
   hitCooldown: 1
   player: {fileID: 0}
 --- !u!212 &212784689912439860

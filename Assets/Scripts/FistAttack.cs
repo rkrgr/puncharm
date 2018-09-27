@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class FistAttack : MonoBehaviour {
 
-    enum PunchDirection { UP, DOWN, LEFT, RIGHT, UPLEFT, UPRIGHT, DOWNLEFT, DOWNRIGHT }
-
     public GameObject fistPrefab;
     public float speed = 25f;
     public float maxDistance = 5f;
@@ -15,7 +13,7 @@ public class FistAttack : MonoBehaviour {
 
     bool isExpanding = false;
     bool isRetracting = false;
-    PunchDirection punchDirection;
+    Vector3 punchDirection;
 
     Vector3 oldPlayerPos;
 
@@ -28,172 +26,20 @@ public class FistAttack : MonoBehaviour {
     {
         if (isExpanding)
         {
-            if (punchDirection == PunchDirection.RIGHT)
+            Expand();
+            if(IsFullyExpanded())
             {
-                fist.transform.position = new Vector2(fist.transform.position.x + speed * Time.deltaTime, transform.position.y);
-
-                if (fist.transform.position.x >= transform.position.x + maxDistance)
-                {
-                    isExpanding = false;
-                    isRetracting = true;
-                }
-            }
-            else if (punchDirection == PunchDirection.LEFT)
-            {
-                fist.transform.position = new Vector2(fist.transform.position.x - speed * Time.deltaTime, transform.position.y);
-
-                if (fist.transform.position.x <= transform.position.x - maxDistance)
-                {
-                    isExpanding = false;
-                    isRetracting = true;
-                }
-            }
-            else if (punchDirection == PunchDirection.UP)
-            {
-                fist.transform.position = new Vector2(transform.position.x, fist.transform.position.y + speed * Time.deltaTime);
-
-                if (fist.transform.position.y >= transform.position.y + maxDistance)
-                {
-                    isExpanding = false;
-                    isRetracting = true;
-                }
-            }
-            else if (punchDirection == PunchDirection.DOWN)
-            {
-                fist.transform.position = new Vector2(transform.position.x, fist.transform.position.y - speed * Time.deltaTime);
-
-                if (fist.transform.position.y <= transform.position.y - maxDistance)
-                {
-                    isExpanding = false;
-                    isRetracting = true;
-                }
-            }
-            else if (punchDirection == PunchDirection.UPLEFT)
-            {
-                fist.transform.position += transform.position - oldPlayerPos + (Vector3.up + Vector3.left).normalized * speed * Time.deltaTime;
-
-                float dis = (fist.transform.position - transform.position).sqrMagnitude;
-                if (dis >= maxDistance * maxDistance)
-                {
-                    isExpanding = false;
-                    isRetracting = true;
-                }
-            }
-            else if (punchDirection == PunchDirection.UPRIGHT)
-            {
-                fist.transform.position += transform.position - oldPlayerPos + (Vector3.up + Vector3.right).normalized * speed * Time.deltaTime;
-
-                float dis = (fist.transform.position - transform.position).sqrMagnitude;
-                if (dis >= maxDistance * maxDistance)
-                {
-                    isExpanding = false;
-                    isRetracting = true;
-                }
-            }
-            else if (punchDirection == PunchDirection.DOWNLEFT)
-            {
-                fist.transform.position += transform.position - oldPlayerPos + (Vector3.down + Vector3.left).normalized * speed * Time.deltaTime;
-
-                float dis = (fist.transform.position - transform.position).sqrMagnitude;
-                if (dis >= maxDistance * maxDistance)
-                {
-                    isExpanding = false;
-                    isRetracting = true;
-                }
-            }
-            else if (punchDirection == PunchDirection.DOWNRIGHT)
-            {
-                fist.transform.position += transform.position - oldPlayerPos + (Vector3.down + Vector3.right).normalized * speed * Time.deltaTime;
-
-                float dis = (fist.transform.position - transform.position).sqrMagnitude;
-                if (dis >= maxDistance * maxDistance)
-                {
-                    isExpanding = false;
-                    isRetracting = true;
-                }
+                isExpanding = false;
+                isRetracting = true;
             }
         }
         else if (isRetracting)
         {
-            if (punchDirection == PunchDirection.RIGHT)
+            Retract();
+            if (IsFullyRetracted())
             {
-                fist.transform.position = new Vector2(fist.transform.position.x - speed * Time.deltaTime, transform.position.y);
-
-                if (fist.transform.position.x <= transform.position.x)
-                {
-                    Destroy(fist);
-                    isRetracting = false;
-                }
-            }
-            else if (punchDirection == PunchDirection.LEFT)
-            {
-                fist.transform.position = new Vector2(fist.transform.position.x + speed * Time.deltaTime, transform.position.y);
-
-                if (fist.transform.position.x >= transform.position.x)
-                {
-                    Destroy(fist);
-                    isRetracting = false;
-                }
-            }
-            else if (punchDirection == PunchDirection.UP)
-            {
-                fist.transform.position = new Vector2(transform.position.x, fist.transform.position.y - speed * Time.deltaTime);
-
-                if (fist.transform.position.y <= transform.position.y)
-                {
-                    Destroy(fist);
-                    isRetracting = false;
-                }
-            }
-            else if (punchDirection == PunchDirection.DOWN)
-            {
-                fist.transform.position = new Vector2(transform.position.x, fist.transform.position.y + speed * Time.deltaTime);
-
-                if (fist.transform.position.y >= transform.position.y)
-                {
-                    Destroy(fist);
-                    isRetracting = false;
-                }
-            }
-            else if (punchDirection == PunchDirection.UPLEFT)
-            {
-               fist.transform.position += transform.position - oldPlayerPos + (Vector3.down + Vector3.right).normalized * speed * Time.deltaTime;
-
-               if (fist.transform.position.y <= transform.position.y)
-                {
-                    Destroy(fist);
-                    isRetracting = false;
-                }
-            }
-            else if (punchDirection == PunchDirection.UPRIGHT)
-            {
-                fist.transform.position += transform.position - oldPlayerPos + (Vector3.down + Vector3.left).normalized * speed * Time.deltaTime;
-
-                if (fist.transform.position.y <= transform.position.y)
-                {
-                    Destroy(fist);
-                    isRetracting = false;
-                }
-            }
-            else if (punchDirection == PunchDirection.DOWNLEFT)
-            {
-                fist.transform.position += transform.position - oldPlayerPos + (Vector3.up + Vector3.right).normalized * speed * Time.deltaTime;
-
-                if (fist.transform.position.y >= transform.position.y)
-                {
-                    Destroy(fist);
-                    isRetracting = false;
-                }
-            }
-            else if (punchDirection == PunchDirection.DOWNRIGHT)
-            {
-                fist.transform.position += transform.position - oldPlayerPos + (Vector3.up + Vector3.left).normalized * speed * Time.deltaTime;
-
-                if (fist.transform.position.y >= transform.position.y)
-                {
-                    Destroy(fist);
-                    isRetracting = false;
-                }
+                Destroy(fist);
+                isRetracting = false;
             }
         }
 
@@ -201,12 +47,12 @@ public class FistAttack : MonoBehaviour {
         {
             if (Input.GetButtonDown("PunchUpLeft"))
             {
-                punchDirection = PunchDirection.UPLEFT;
+                punchDirection = Vector2.up + Vector2.left;
                 Punch();
             }
             else if (Input.GetButtonDown("PunchUpRight"))
             {
-                punchDirection = PunchDirection.UPRIGHT;
+                punchDirection = Vector2.up + Vector2.right;
                 Punch();
             }
             else if(Input.GetButtonDown("Punch"))
@@ -216,32 +62,32 @@ public class FistAttack : MonoBehaviour {
 
                 if (verticalInput > 0.5f)
                 {
-                    punchDirection = PunchDirection.UP;
+                    punchDirection = Vector2.up;
                 }
                 else if (verticalInput < -0.5f)
                 {
                     if (horizontalInput > 0.5f)
                     {
-                        punchDirection = PunchDirection.DOWNRIGHT;
+                        punchDirection = Vector2.down + Vector2.right;
                     }
                     else if (horizontalInput < -0.5f)
                     {
-                        punchDirection = PunchDirection.DOWNLEFT;
+                        punchDirection = Vector2.down + Vector2.left;
                     }
                     else
                     {
-                        punchDirection = PunchDirection.DOWN;
+                        punchDirection = Vector2.down;
                     }
                 }
                 else
                 {
                     if (movement.IsFacingLeft())
                     {
-                        punchDirection = PunchDirection.LEFT;
+                        punchDirection = Vector2.left;
                     }
                     else
                     {
-                        punchDirection = PunchDirection.RIGHT;
+                        punchDirection = Vector2.right;
                     }
                 }
                 Punch();
@@ -254,6 +100,39 @@ public class FistAttack : MonoBehaviour {
     {
         isExpanding = true;
         fist = Instantiate(fistPrefab, new Vector2(transform.position.x, transform.position.y), transform.rotation);
+    }
+
+    public void Expand()
+    {
+        fist.transform.position += transform.position - oldPlayerPos + punchDirection.normalized * speed * Time.deltaTime;
+    }
+
+    public void Retract()
+    {
+        fist.transform.position += transform.position - oldPlayerPos - punchDirection.normalized * speed * Time.deltaTime;
+    }
+
+    public bool IsFullyExpanded()
+    {
+        float dis = (fist.transform.position - transform.position).sqrMagnitude;
+        return dis >= maxDistance * maxDistance;
+    }
+
+    public bool IsFullyRetracted()
+    {
+        if (punchDirection.y > 0)
+        {
+            return fist.transform.position.y <= transform.position.y;
+        }
+        if (punchDirection.y < 0)
+        {
+            return fist.transform.position.y >= transform.position.y;
+        }
+        if (punchDirection.x > 0)
+        {
+            return fist.transform.position.x <= transform.position.x;
+        }
+        return fist.transform.position.x <= transform.position.x;
     }
 
     public bool IsPunching()

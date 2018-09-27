@@ -13,7 +13,6 @@ public class Enemy : MonoBehaviour {
     public float speed;
 
     public float hitCooldown = 1f;
-    public Vector2 pushBack = new Vector2(300, 800);
 
     public Rigidbody2D player;
 
@@ -91,14 +90,6 @@ public class Enemy : MonoBehaviour {
         currentHitCooldown = hitCooldown;
 
         rb.velocity = Vector2.zero;
-        if(isFacingLeft)
-        {
-            rb.AddForce(pushBack);
-        }
-        else
-        {
-            rb.AddForce(new Vector2(-pushBack.x, pushBack.y));
-        }
     }
 
     private void Die()

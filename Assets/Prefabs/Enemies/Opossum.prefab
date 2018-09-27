@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 114751837355682062}
   - component: {fileID: 58166007372311700}
   - component: {fileID: 61288679513290408}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Opossum
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -137,7 +137,6 @@ MonoBehaviour:
   health: 100
   speed: 200
   hitCooldown: 1
-  pushBack: {x: 200, y: 400}
   player: {fileID: 0}
 --- !u!212 &212784689912439860
 SpriteRenderer:

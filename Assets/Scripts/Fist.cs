@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Fist : MonoBehaviour {
 
+    public int damage = 50;
+
     GameObject player;
     FistAttack fistAttack;
 
@@ -15,10 +17,17 @@ public class Fist : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D col)
     {
+        Enemy enemy = col.GetComponent<Enemy>();
+        if (enemy != null)
+        {
+            enemy.TakeDamage(damage);
+            fistAttack.Collide();
+        }
+
         CompositeCollider2D tileCollider = col.GetComponent<CompositeCollider2D>();
         if(tileCollider != null)
         {
-            fistAttack.CollideWithWall();
+            fistAttack.Collide();
         }
     }
 
@@ -27,7 +36,7 @@ public class Fist : MonoBehaviour {
         CompositeCollider2D tileCollider = col.GetComponent<CompositeCollider2D>();
         if (tileCollider != null)
         {
-            fistAttack.CollideWithWall();
+            fistAttack.Collide();
         }
     }
 

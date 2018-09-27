@@ -140,7 +140,7 @@ public class FistAttack : MonoBehaviour {
         return isExpanding || isRetracting;
     }
 
-    public void CollideWithWall()
+    public void Collide()
     {
         isExpanding = false;
         isRetracting = true;

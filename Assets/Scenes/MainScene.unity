@@ -23347,6 +23347,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &1364704813
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4161323203579496, guid: d56b1fbaf53ef744a917b5ae25accc24, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 5.21
+      objectReference: {fileID: 0}
+    - target: {fileID: 4161323203579496, guid: d56b1fbaf53ef744a917b5ae25accc24, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 8.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 4161323203579496, guid: d56b1fbaf53ef744a917b5ae25accc24, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4161323203579496, guid: d56b1fbaf53ef744a917b5ae25accc24, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4161323203579496, guid: d56b1fbaf53ef744a917b5ae25accc24, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4161323203579496, guid: d56b1fbaf53ef744a917b5ae25accc24, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4161323203579496, guid: d56b1fbaf53ef744a917b5ae25accc24, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4161323203579496, guid: d56b1fbaf53ef744a917b5ae25accc24, type: 2}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114751837355682062, guid: d56b1fbaf53ef744a917b5ae25accc24,
+        type: 2}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 495469494}
+    - target: {fileID: 1729712319609964, guid: d56b1fbaf53ef744a917b5ae25accc24, type: 2}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d56b1fbaf53ef744a917b5ae25accc24, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1 &1800754627
 GameObject:
   m_ObjectHideFlags: 0

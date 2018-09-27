@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 50663325346609278}
   - component: {fileID: 58412220332224308}
   - component: {fileID: 114414236508615740}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Fist
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -89,6 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f0176dce15a24c419351520f3a20b78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 50
 --- !u!212 &212960417792741228
 SpriteRenderer:
   m_ObjectHideFlags: 1

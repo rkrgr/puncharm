@@ -123,7 +123,7 @@ GameObject:
   - component: {fileID: 2190588}
   - component: {fileID: 2190590}
   - component: {fileID: 2190589}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: HitBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3410,7 +3410,7 @@ Prefab:
       objectReference: {fileID: 495469494}
     - target: {fileID: 1729712319609964, guid: d56b1fbaf53ef744a917b5ae25accc24, type: 2}
       propertyPath: m_Layer
-      value: 0
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d56b1fbaf53ef744a917b5ae25accc24, type: 2}

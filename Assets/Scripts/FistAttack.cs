@@ -132,7 +132,7 @@ public class FistAttack : MonoBehaviour {
         {
             return fist.transform.position.x <= transform.position.x;
         }
-        return fist.transform.position.x <= transform.position.x;
+        return fist.transform.position.x >= transform.position.x;
     }
 
     public bool IsPunching()

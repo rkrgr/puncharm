@@ -7,12 +7,12 @@ public class Enemy : MonoBehaviour {
 
     const int moveLeft = -1;
     const int moveRight = 1;
-
     public int health = 100;
 
     public float speed;
     public int damage;
 
+    public float pushBackForce = 100f;
     public float hitCooldown = 1f;
 
     public Rigidbody2D player;
@@ -22,7 +22,7 @@ public class Enemy : MonoBehaviour {
     int moveDirection = moveLeft;
     bool isFacingLeft = true;
 
-    float currentHitCooldown = 0;
+    bool isHit = false;
 
     Animator animator;
 
@@ -44,14 +44,12 @@ public class Enemy : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if (isFacingLeft && IsMovingRight() || IsFacingRight() && IsMovingLeft())
+        if (!isHit)
         {
-            FlipCharacter();
-        }
-
-        currentHitCooldown -= Time.deltaTime;
-        if(currentHitCooldown <= 0)
-        {
+            if (isFacingLeft && IsMovingRight() || IsFacingRight() && IsMovingLeft())
+            {
+                FlipCharacter();
+            }
             rb.velocity = new Vector2(moveDirection * speed * Time.deltaTime, rb.velocity.y);
         }
     }
@@ -81,25 +79,25 @@ public class Enemy : MonoBehaviour {
 
     public void TakeDamage(int damage)
     {
-        if(currentHitCooldown <= 0)
+        if(!isHit)
         {
+            isHit = true;
             health -= damage;
             if(health <= 0)
             {
                 Die();
                 return;
             }
+            rb.velocity = Vector2.zero;
+            rb.AddForce(new Vector2(-moveDirection * pushBackForce, 0f));
+            animator.SetLayerWeight(1, 1f);
+            Invoke("ResetHit", hitCooldown);
         }
-
-        currentHitCooldown = hitCooldown;
-
-        rb.velocity = Vector2.zero;
-        animator.SetLayerWeight(1, 1f);
-        Invoke("ResetHurtAnimation", 1f);
     }
 
-    void ResetHurtAnimation()
+    void ResetHit()
     {
+        isHit = false;
         animator.SetLayerWeight(1, 0f);
     }
 

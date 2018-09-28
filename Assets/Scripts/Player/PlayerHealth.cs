@@ -25,7 +25,6 @@ public class PlayerHealth : MonoBehaviour {
         {
             health = 0;
         }
-        Debug.Log(health);
     }
 
     public void TakeHeal(int heal)

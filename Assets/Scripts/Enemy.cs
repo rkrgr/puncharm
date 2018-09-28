@@ -24,8 +24,11 @@ public class Enemy : MonoBehaviour {
 
     float currentHitCooldown = 0;
 
-    void Start () {
+    Animator animator;
+
+    void Awake () {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
 	}
 	
 	void Update () {
@@ -91,9 +94,16 @@ public class Enemy : MonoBehaviour {
         currentHitCooldown = hitCooldown;
 
         rb.velocity = Vector2.zero;
+        animator.SetLayerWeight(1, 1f);
+        Invoke("ResetHurtAnimation", 1f);
     }
 
-    private void Die()
+    void ResetHurtAnimation()
+    {
+        animator.SetLayerWeight(1, 0f);
+    }
+
+    void Die()
     {
         Destroy(gameObject);
     }

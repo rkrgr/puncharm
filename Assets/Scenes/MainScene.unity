@@ -3412,6 +3412,11 @@ Prefab:
       propertyPath: m_Layer
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 95588440892367860, guid: d56b1fbaf53ef744a917b5ae25accc24,
+        type: 2}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d56b1fbaf53ef744a917b5ae25accc24, type: 2}
   m_IsPrefabAsset: 0

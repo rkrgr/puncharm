@@ -11,8 +11,7 @@ public class PlayerMovement : MonoBehaviour {
     public float lowJumpMultiplier = 2f;
 
     public float swingVelocityAddSpeed = 0.1f;
-
-    public Transform groundCheck;
+    
     public float checkRadius;
     public LayerMask whatIsGround;
 
@@ -20,16 +19,17 @@ public class PlayerMovement : MonoBehaviour {
 
     Rigidbody2D rb;
     FistAttack fistAttack;
+    PlayerGroundCheck groundChecker;
 
     bool jump;
     bool grappled;
     float moveInput;
     internal bool isFacingRight = true;
-    bool isGrounded;
 
     void Awake () {
         rb = GetComponent<Rigidbody2D>();
         fistAttack = GetComponent<FistAttack>();
+        groundChecker = GetComponentInChildren<PlayerGroundCheck>();
 	}
 	
     void Update()
@@ -54,10 +54,9 @@ public class PlayerMovement : MonoBehaviour {
 
 	void FixedUpdate ()
     {
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
-        animator.SetBool("IsOnGround", isGrounded);
+        animator.SetBool("IsOnGround", groundChecker.IsGrounded());
 
-        if (jump && isGrounded)
+        if (jump && groundChecker.IsGrounded())
         {
             Jump();
         }
@@ -75,7 +74,7 @@ public class PlayerMovement : MonoBehaviour {
             FlipCharacter();
         }
 
-        if(!isGrounded)
+        if(!groundChecker.IsGrounded())
         {
             animator.SetFloat("VerticalVelocity", rb.velocity.y);
         }

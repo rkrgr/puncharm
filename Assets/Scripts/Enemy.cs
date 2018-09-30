@@ -16,6 +16,11 @@ public class Enemy : MonoBehaviour {
     public float pushBackForce = 100f;
     public float hitCooldown = 1f;
 
+    public float playerDistance = 1f;
+
+    public float[] patArea = new float[2];
+    public float patSpeed;
+
     GameObject player;
 
     Rigidbody2D rb;
@@ -55,7 +60,7 @@ public class Enemy : MonoBehaviour {
                     FlipCharacter();
                 }
 
-                if(Mathf.Abs(player.transform.position.x - transform.position.x) > 1f)
+                if(Mathf.Abs(player.transform.position.x - transform.position.x) > playerDistance)
                 {
                     rb.velocity = new Vector2(moveDirection * speed * Time.deltaTime, rb.velocity.y);
                 }
@@ -66,7 +71,7 @@ public class Enemy : MonoBehaviour {
             }
             else
             {
-                rb.velocity = new Vector2(0f, rb.velocity.y);
+                rb.velocity = new Vector2(moveDirection * patSpeed * Time.deltaTime, rb.velocity.y);
             }
         }
 	}

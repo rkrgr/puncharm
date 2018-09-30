@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Damage : MonoBehaviour {
+public class PlayerDamage : MonoBehaviour {
 
     public float invincibilityTime = 2f;
 
@@ -19,16 +19,21 @@ public class Damage : MonoBehaviour {
 
     void OnTriggerStay2D(Collider2D col)
     {
-        if(!isInvincible)
+        Enemy enemy = col.GetComponent<Enemy>();
+        if(enemy != null)
         {
-            Enemy enemy = col.GetComponent<Enemy>();
-            if(enemy != null)
-            {
-                health.TakeDamage(enemy.damage);
-                isInvincible = true;
-                animator.SetLayerWeight(1, 1f);
-                Invoke("ResetInvincible", invincibilityTime);
-            }
+            Hit(enemy.damage);
+        }
+    }
+
+    public void Hit(int damage)
+    {
+        if (!isInvincible)
+        {
+            health.TakeDamage(damage);
+            isInvincible = true;
+            animator.SetLayerWeight(1, 1f);
+            Invoke("ResetInvincible", invincibilityTime);
         }
     }
 

@@ -6,14 +6,14 @@ public class Damage : MonoBehaviour {
 
     public float invincibilityTime = 2f;
 
-    PlayerHealth health;
+    Health health;
 
     Animator animator;
     bool isInvincible = false;
 
     void Awake()
     {
-        health = GetComponentInParent<PlayerHealth>();
+        health = GetComponentInParent<Health>();
         animator = GetComponentInParent<Animator>();
     }
 

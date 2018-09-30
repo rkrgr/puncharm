@@ -7,7 +7,8 @@ public class Enemy : MonoBehaviour {
 
     const int moveLeft = -1;
     const int moveRight = 1;
-    public int health = 100;
+
+    public float aggroRange = 100f;
 
     public float speed;
     public int damage;
@@ -15,7 +16,7 @@ public class Enemy : MonoBehaviour {
     public float pushBackForce = 100f;
     public float hitCooldown = 1f;
 
-    public Rigidbody2D player;
+    GameObject player;
 
     Rigidbody2D rb;
 
@@ -25,34 +26,50 @@ public class Enemy : MonoBehaviour {
     bool isHit = false;
 
     Animator animator;
+    Health health;
 
     void Awake () {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        player = GameObject.FindWithTag("Player");
+        health = GetComponent<Health>();
 	}
 	
 	void Update () {
-        if(rb.position.x > player.position.x)
-        {
-            moveDirection = moveLeft;
-        }
-        else
-        {
-            moveDirection = moveRight;
-        }
-	}
-
-    void FixedUpdate()
-    {
         if (!isHit)
         {
-            if (isFacingLeft && IsMovingRight() || IsFacingRight() && IsMovingLeft())
+            float playerDis = (player.transform.position - transform.position).sqrMagnitude;
+            if (playerDis < aggroRange * aggroRange)
             {
-                FlipCharacter();
+                if(rb.position.x > player.transform.position.x)
+                {
+                    moveDirection = moveLeft;
+                }
+                else
+                {
+                    moveDirection = moveRight;
+                }
+
+                if (isFacingLeft && IsMovingRight() || IsFacingRight() && IsMovingLeft())
+                {
+                    FlipCharacter();
+                }
+
+                if(Mathf.Abs(player.transform.position.x - transform.position.x) > 1f)
+                {
+                    rb.velocity = new Vector2(moveDirection * speed * Time.deltaTime, rb.velocity.y);
+                }
+                else
+                {
+                    rb.velocity = new Vector2(0f, rb.velocity.y);
+                }
             }
-            rb.velocity = new Vector2(moveDirection * speed * Time.deltaTime, rb.velocity.y);
+            else
+            {
+                rb.velocity = new Vector2(0f, rb.velocity.y);
+            }
         }
-    }
+	}
 
     bool IsFacingRight()
     {
@@ -82,12 +99,14 @@ public class Enemy : MonoBehaviour {
         if(!isHit)
         {
             isHit = true;
-            health -= damage;
-            if(health <= 0)
+            health.TakeDamage(damage);
+            
+            if(health.IsDead())
             {
                 Die();
                 return;
             }
+
             rb.velocity = Vector2.zero;
             rb.AddForce(new Vector2(-moveDirection * pushBackForce, 0f));
             animator.SetLayerWeight(1, 1f);

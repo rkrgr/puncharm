@@ -217,7 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d6cf3d21df63484a9fe4e0969fedf53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aggroRange: 4
+  aggroRange: 2
   patSpeed: 80
   speed: 750
   damage: 30

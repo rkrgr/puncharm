@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour {
 
     public float aggroRange = 100f;
 
+    public float patSpeed;
     public float speed;
     public int damage;
 
@@ -18,10 +19,10 @@ public class Enemy : MonoBehaviour {
 
     public float playerDistance = 1f;
 
-    public float[] patArea = new float[2];
-    public float patSpeed;
+    public LayerMask ground;
 
     GameObject player;
+    GameObject groundCheckForward;
 
     Rigidbody2D rb;
 
@@ -38,13 +39,16 @@ public class Enemy : MonoBehaviour {
         animator = GetComponent<Animator>();
         player = GameObject.FindWithTag("Player");
         health = GetComponent<Health>();
+
+        groundCheckForward = GameObject.Find("GroundCheckForward");
 	}
 	
 	void Update () {
         if (!isHit)
         {
-            float playerDis = (player.transform.position - transform.position).sqrMagnitude;
-            if (playerDis < aggroRange * aggroRange)
+            float horizontalPlayerDis = Mathf.Abs(player.transform.position.x - transform.position.x);
+            float verticalPlayerDis = Mathf.Abs(player.transform.position.y - transform.position.y);
+            if (horizontalPlayerDis < aggroRange * aggroRange && verticalPlayerDis < 2f)
             {
                 if(rb.position.x > player.transform.position.x)
                 {
@@ -71,6 +75,14 @@ public class Enemy : MonoBehaviour {
             }
             else
             {
+                RaycastHit2D hit = Physics2D.Raycast(groundCheckForward.transform.position, Vector2.down, 0.1f, ground);
+
+                if(hit.collider == null)
+                {
+                    FlipMoveDirection();
+                    FlipCharacter();
+                }
+
                 rb.velocity = new Vector2(moveDirection * patSpeed * Time.deltaTime, rb.velocity.y);
             }
         }
@@ -89,6 +101,11 @@ public class Enemy : MonoBehaviour {
     bool IsMovingRight()
     {
         return moveDirection == moveRight;
+    }
+
+    void FlipMoveDirection()
+    {
+        moveDirection = -moveDirection;
     }
 
     void FlipCharacter()

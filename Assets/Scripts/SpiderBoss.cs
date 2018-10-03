@@ -6,6 +6,7 @@ public class SpiderBoss : MonoBehaviour {
 
     public float speed = 500f;
     public float gravitySpeed = 500f;
+    public LayerMask obstacle;
 
     Vector2 moveDirection;
     Vector2 gravityDirection = Vector2.down;
@@ -21,11 +22,11 @@ public class SpiderBoss : MonoBehaviour {
     void Start()
     {
         BoxCollider2D col = GetComponent<BoxCollider2D>();
-        colliderHalfWidth = col.size.x / 4;
+        colliderHalfWidth = col.size.x * transform.lossyScale.x / 2;
+        SetMoveRight();
     }
 
-	void Update () {
-        SetMoveRight();
+	void FixedUpdate () {
 
         if (CollisonRight())
         {
@@ -38,7 +39,7 @@ public class SpiderBoss : MonoBehaviour {
 
     void Move()
     {
-        rb.velocity = (moveDirection + gravityDirection) * speed * Time.deltaTime;
+        rb.velocity = transform.right * speed * Time.deltaTime;
     }
 
     void SetMoveRight()
@@ -48,7 +49,7 @@ public class SpiderBoss : MonoBehaviour {
 
     bool CollisonRight()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position + transform.right * colliderHalfWidth, transform.right, 0.1f, LayerMask.GetMask("Obstacle"));
+        RaycastHit2D hit = Physics2D.Raycast(transform.position + transform.right * colliderHalfWidth, transform.right, 0.05f, obstacle);
         return hit.collider != null;
     }
 }

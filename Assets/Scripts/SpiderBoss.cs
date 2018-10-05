@@ -8,8 +8,10 @@ public class SpiderBoss : MonoBehaviour {
     public float gravitySpeed = 500f;
     public LayerMask obstacle;
 
+    public float jumpCooldown = 2f;
+    float waitForNextJump;
+
     Vector2 moveDirection;
-    Vector2 gravityDirection = Vector2.down;
     float colliderHalfWidth;
     float colliderHalfHeight;
 
@@ -30,47 +32,116 @@ public class SpiderBoss : MonoBehaviour {
         BoxCollider2D col = GetComponent<BoxCollider2D>();
         colliderHalfWidth = col.size.x * transform.lossyScale.x / 2;
         colliderHalfHeight = col.size.y * transform.lossyScale.y / 2;
-        SetMoveRight();
+        SetMoveLeft();
     }
 
     void Update()
     {
-        if (!jump && (transform.position.y < player.transform.position.y + .5f && transform.position.y > player.transform.position.y - .1f
+        if (!jump && waitForNextJump <= 0f && (transform.position.y < player.transform.position.y + .5f && transform.position.y > player.transform.position.y - .1f
             || transform.position.x < player.transform.position.x + .5f && transform.position.x > player.transform.position.x - .5f))
         {
             jump = true;
             transform.Rotate(Vector3.forward, 180f);
+            waitForNextJump = jumpCooldown;
         }
-        Debug.Log(jump);
+
+        if(waitForNextJump > 0f)
+        {
+            waitForNextJump -= Time.deltaTime;
+        }
     }
 
 	void FixedUpdate () {
 
         if(!jump)
         {
-            if (CollisonRight())
+            if (IsMovingRight() && CollisonRight())
             {
-                transform.Rotate(Vector3.forward, 90f);
-                gravityDirection = -transform.up;
+                RotateRight();
+                SetMoveRight();
+            }
+            else if(IsMovingLeft() && CollisonLeft())
+            {
+                RotateLeft();
+                SetMoveLeft();
             }
 
             Move();
         }
         else // jump
         {
-            gravityDirection = transform.up;
             rb.velocity = -transform.up * speed * 2 * Time.deltaTime;
 
             if (CollisonDown())
             {
                 jump = false;
+
+                if (transform.rotation.eulerAngles.z == 0f)
+                {
+                    if(transform.position.x < player.transform.position.x)
+                    {
+                        SetMoveLeft();
+                    }
+                    else
+                    {
+                        SetMoveRight();
+                    }
+                }
+                else if(transform.rotation.eulerAngles.z == 180f)
+                {
+                    if (transform.position.x < player.transform.position.x)
+                    {
+                        SetMoveRight();
+                    }
+                    else
+                    {
+                        SetMoveLeft();
+                    }
+                }
+                else if(transform.rotation.eulerAngles.z == 90f)
+                {
+                    if (transform.position.y < player.transform.position.y)
+                    {
+                        SetMoveLeft();
+                    }
+                    else
+                    {
+                        SetMoveRight();
+                    }
+                }
+                else
+                {
+                    if (transform.position.y < player.transform.position.y)
+                    {
+                        SetMoveRight();
+                    }
+                    else
+                    {
+                        SetMoveLeft();
+                    }
+                }
             }
         }
 	}
 
+    void RotateRight()
+    {
+        transform.Rotate(Vector3.forward, 90f);
+    }
+
+    void RotateLeft()
+    {
+        transform.Rotate(Vector3.forward, -90f);
+    }
+
     void Move()
     {
-        rb.velocity = transform.right * speed * Time.deltaTime;
+        rb.velocity = moveDirection * speed * Time.deltaTime;
+    }
+
+    void SetMoveLeft()
+    {
+        moveDirection = -transform.right;
     }
 
     void SetMoveRight()
@@ -78,11 +149,28 @@ public class SpiderBoss : MonoBehaviour {
         moveDirection = transform.right;
     }
 
+    bool IsMovingLeft()
+    {
+        return (Vector3) moveDirection == -transform.right;
+    }
+
+    bool IsMovingRight()
+    {
+        return (Vector3)moveDirection == transform.right;
+    }
+
+    bool CollisonLeft()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position - transform.right * colliderHalfWidth, -transform.right, 0.05f, obstacle);
+        return hit.collider != null;
+    }
+
     bool CollisonRight()
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position + transform.right * colliderHalfWidth, transform.right, 0.05f, obstacle);
         return hit.collider != null;
     }
+
     bool CollisonDown()
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position - transform.up * colliderHalfHeight, -transform.up, 0.5f, obstacle);

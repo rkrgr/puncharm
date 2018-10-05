@@ -319,6 +319,7 @@ MonoBehaviour:
   obstacle:
     serializedVersion: 2
     m_Bits: 512
+  jumpCooldown: 4
 --- !u!1 &66299120
 GameObject:
   m_ObjectHideFlags: 0

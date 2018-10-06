@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4214528899731982}
   - component: {fileID: 2569400265364230966}
   m_Layer: 0
-  m_Name: Grid
+  m_Name: TesttileMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

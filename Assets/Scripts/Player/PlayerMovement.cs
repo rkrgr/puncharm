@@ -27,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
     float moveInput;
     internal bool isFacingRight = true;
 
-    void Awake()
+    public void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         fistAttack = GetComponent<FistAttack>();

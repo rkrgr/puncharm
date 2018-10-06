@@ -10,10 +10,8 @@ public class ScientistZombie : Enemy {
 
     public float aggroRange = 100f;
 
-    public float patSpeed;
-    public float speed;
-
-    public float pushBackForce = 100f;
+    public float normalSpeed;
+    public float chargeSpeed;
 
     public float playerDistance = 1f;
 
@@ -38,10 +36,8 @@ public class ScientistZombie : Enemy {
         groundCheckForward = GameObject.Find("GroundCheckForward");
 	}
 	
-	void Update () {
-        float horizontalPlayerDis = Mathf.Abs(player.transform.position.x - transform.position.x);
-        float verticalPlayerDis = Mathf.Abs(player.transform.position.y - transform.position.y);
-        if (horizontalPlayerDis < aggroRange * aggroRange && verticalPlayerDis < 2f)
+	void FixedUpdate () {
+        if (IsSeeingPlayer())
         {
             if(rb.position.x > player.transform.position.x)
             {
@@ -59,7 +55,7 @@ public class ScientistZombie : Enemy {
 
             if(Mathf.Abs(player.transform.position.x - transform.position.x) > playerDistance)
             {
-                rb.velocity = new Vector2(moveDirection * speed * Time.deltaTime, rb.velocity.y);
+                rb.velocity = new Vector2(moveDirection * chargeSpeed * Time.deltaTime, rb.velocity.y);
             }
             else
             {
@@ -76,7 +72,7 @@ public class ScientistZombie : Enemy {
                 FlipCharacter();
             }
 
-            rb.velocity = new Vector2(moveDirection * patSpeed * Time.deltaTime, rb.velocity.y);
+            rb.velocity = new Vector2(moveDirection * normalSpeed * Time.deltaTime, rb.velocity.y);
         }
 	}
 
@@ -108,11 +104,10 @@ public class ScientistZombie : Enemy {
         transform.localScale = scale;
     }
 
-    public override void TakeDamage(int damage)
+    bool IsSeeingPlayer()
     {
-        base.TakeDamage(damage);
-       
-        rb.velocity = Vector2.zero;
-        rb.AddForce(new Vector2(-moveDirection * pushBackForce, 0f));
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, aggroRange, LayerMask.GetMask("Player"));
+        return hit.collider != null;
     }
+
 }

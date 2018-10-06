@@ -51,12 +51,12 @@ public class ScientistZombie : Enemy {
         }
 
         if (chargeTimeLeft > 0f) {
-            rb.velocity = moveDirection * chargeSpeed * Time.deltaTime;
+            rb.velocity = new Vector2(moveDirection.x * chargeSpeed * Time.deltaTime, rb.velocity.y);
             chargeTimeLeft -= Time.deltaTime;
         }
         else
         {
-            rb.velocity = moveDirection * normalSpeed * Time.deltaTime;
+            rb.velocity = new Vector2(moveDirection.x * normalSpeed * Time.deltaTime, rb.velocity.y);
         }
 
         if (IsMovingLeft() && (!HitGroundLeft() && HitGroundRight() || HitWallLeft())

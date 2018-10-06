@@ -1,24 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Helper.GameObjectExt;
 
 public class PlayerGroundCheck : MonoBehaviour {
 
-    bool isGrounded;
+    public bool IsGrounded { get; private set; }
 
-    public bool IsGrounded()
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        return isGrounded;
+        if (collision.gameObject.IsInLayer("Obstacle"))
+        {
+            IsGrounded = true;
+        }
     }
 
-    void OnTriggerEnter2D()
+    void OnTriggerExit2D(Collider2D collision)
     {
-        isGrounded = true;
+        if (collision.gameObject.IsInLayer("Obstacle"))
+        {
+            IsGrounded = false;
+        }
     }
-
-    void OnTriggerExit2D()
-    {
-        isGrounded = false;
-    }
-
 }

@@ -1,9 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Health : MonoBehaviour {
 
+    public event Action OnDeath;
     public int maxHealth;
 
     int health;
@@ -21,9 +23,10 @@ public class Health : MonoBehaviour {
 	public void TakeDamage(int damage)
     {
         health -= damage;
-        if(health < 0)
+        if(health <= 0)
         {
             health = 0;
+            if (OnDeath != null) OnDeath();
         }
     }
 
@@ -44,6 +47,7 @@ public class Health : MonoBehaviour {
     public void Die()
     {
         health = 0;
+        if(OnDeath != null) OnDeath();
     }
 
     public int GetHealth()

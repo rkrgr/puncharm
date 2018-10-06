@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpiderBoss : MonoBehaviour {
+public class SpiderBoss : Enemy {
 
     public float speed = 500f;
     public float gravitySpeed = 500f;
@@ -21,8 +21,9 @@ public class SpiderBoss : MonoBehaviour {
 
     GameObject player;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player");
     }

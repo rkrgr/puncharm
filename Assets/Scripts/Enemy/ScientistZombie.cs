@@ -5,25 +5,26 @@ using UnityEngine;
 
 public class ScientistZombie : Enemy {
 
-    const int moveLeft = -1;
-    const int moveRight = 1;
-
     public float aggroRange = 100f;
 
     public float normalSpeed;
     public float chargeSpeed;
+
+    public float chargeTime;
+    float chargeTimeLeft;
 
     public float playerDistance = 1f;
 
     public LayerMask ground;
 
     GameObject player;
-    GameObject groundCheckForward;
 
     Rigidbody2D rb;
+    BoxCollider2D enemyCollider;
+    Vector3 localPositionGroundLeft;
+    Vector3 localPositionGroundRight;
 
-    int moveDirection = moveLeft;
-    bool isFacingLeft = true;
+    Vector2 moveDirection = Vector2.right;
 
     Animator animator;
 
@@ -32,63 +33,82 @@ public class ScientistZombie : Enemy {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         player = GameObject.FindWithTag("Player");
-
-        groundCheckForward = GameObject.Find("GroundCheckForward");
+        enemyCollider = GetComponent<BoxCollider2D>();
 	}
+
+    void Start()
+    {
+        float halfHorizontalLength = enemyCollider.size.x * transform.lossyScale.x / 2;
+        float halfVerticalLength = enemyCollider.size.y * transform.lossyScale.y / 2;
+        localPositionGroundLeft = new Vector2(-halfHorizontalLength, -halfVerticalLength);
+        localPositionGroundRight = new Vector2(halfHorizontalLength, -halfVerticalLength);
+    }
 	
 	void FixedUpdate () {
         if (IsSeeingPlayer())
         {
-            if(rb.position.x > player.transform.position.x)
-            {
-                moveDirection = moveLeft;
-            }
-            else
-            {
-                moveDirection = moveRight;
-            }
+            StartCharge();
+        }
 
-            if (isFacingLeft && IsMovingRight() || IsFacingRight() && IsMovingLeft())
-            {
-                FlipCharacter();
-            }
-
-            if(Mathf.Abs(player.transform.position.x - transform.position.x) > playerDistance)
-            {
-                rb.velocity = new Vector2(moveDirection * chargeSpeed * Time.deltaTime, rb.velocity.y);
-            }
-            else
-            {
-                rb.velocity = new Vector2(0f, rb.velocity.y);
-            }
+        if (chargeTimeLeft > 0f) {
+            rb.velocity = new Vector2(moveDirection.x * chargeSpeed * Time.deltaTime, rb.velocity.y);
+            chargeTimeLeft -= Time.deltaTime;
         }
         else
         {
-            RaycastHit2D hit = Physics2D.Raycast(groundCheckForward.transform.position, Vector2.down, 0.1f, ground);
+            rb.velocity = new Vector2(moveDirection.x * normalSpeed * Time.deltaTime, rb.velocity.y);
+        }
 
-            if(hit.collider == null)
-            {
-                FlipMoveDirection();
-                FlipCharacter();
-            }
-
-            rb.velocity = new Vector2(moveDirection * normalSpeed * Time.deltaTime, rb.velocity.y);
+        if (IsMovingLeft() && (!HitGroundLeft() && HitGroundRight() || HitWallLeft())
+            || IsMovingRight() && (HitGroundLeft() && !HitGroundRight() || HitWallRight()))
+        {
+            FlipMoveDirection();
+            FlipCharacter();
+            chargeTimeLeft = 0f;
         }
 	}
 
-    bool IsFacingRight()
+    private void StartCharge()
     {
-        return !isFacingLeft;
+        chargeTimeLeft = chargeTime;
+        if (rb.position.x > player.transform.position.x)
+        {
+            moveDirection = Vector2.left;
+        }
+        else
+        {
+            moveDirection = Vector2.right;
+        }
+    }
+
+    bool HitGroundLeft()
+    {
+        return Physics2D.Raycast(transform.position + localPositionGroundLeft, Vector2.down, 0.1f, ground).collider != null;
+    }
+
+    bool HitGroundRight()
+    {
+        return Physics2D.Raycast(transform.position + localPositionGroundRight, Vector2.down, 0.1f, ground).collider != null;
+    }
+
+    bool HitWallLeft()
+    {
+        return Physics2D.Raycast(transform.position + localPositionGroundLeft, moveDirection, 0.1f, ground).collider != null;
+    }
+
+    bool HitWallRight()
+    {
+        return Physics2D.Raycast(transform.position + localPositionGroundRight, moveDirection, 0.1f, ground).collider != null;
     }
 
     bool IsMovingLeft()
     {
-        return moveDirection == moveLeft;
+        return moveDirection == Vector2.left;
     }
 
     bool IsMovingRight()
     {
-        return moveDirection == moveRight;
+        return moveDirection == Vector2.right;
     }
 
     void FlipMoveDirection()
@@ -98,7 +118,6 @@ public class ScientistZombie : Enemy {
 
     void FlipCharacter()
     {
-        isFacingLeft = !isFacingLeft;
         Vector3 scale = transform.localScale;
         scale.x = -scale.x;
         transform.localScale = scale;
@@ -106,7 +125,7 @@ public class ScientistZombie : Enemy {
 
     bool IsSeeingPlayer()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, aggroRange, LayerMask.GetMask("Player"));
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, moveDirection, aggroRange, LayerMask.GetMask("Player"));
         return hit.collider != null;
     }
 

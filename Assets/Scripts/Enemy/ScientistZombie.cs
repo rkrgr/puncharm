@@ -14,7 +14,6 @@ public class ScientistZombie : Enemy {
     public float speed;
 
     public float pushBackForce = 100f;
-    public float hitCooldown = 1f;
 
     public float playerDistance = 1f;
 
@@ -115,12 +114,5 @@ public class ScientistZombie : Enemy {
        
         rb.velocity = Vector2.zero;
         rb.AddForce(new Vector2(-moveDirection * pushBackForce, 0f));
-        animator.SetLayerWeight(1, 1f);
-        Invoke("ResetHit", hitCooldown);
-    }
-
-    void ResetHit()
-    {
-        animator.SetLayerWeight(1, 0f);
     }
 }

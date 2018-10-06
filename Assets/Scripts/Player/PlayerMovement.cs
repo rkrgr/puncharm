@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour {
+public class PlayerMovement : MonoBehaviour
+{
 
     public float speed;
     public float jumpForce;
@@ -11,7 +12,7 @@ public class PlayerMovement : MonoBehaviour {
     public float lowJumpMultiplier = 2f;
 
     public float swingVelocityAddSpeed = 0.1f;
-    
+
     public float checkRadius;
     public LayerMask whatIsGround;
 
@@ -26,12 +27,13 @@ public class PlayerMovement : MonoBehaviour {
     float moveInput;
     internal bool isFacingRight = true;
 
-    void Awake () {
+    void Awake()
+    {
         rb = GetComponent<Rigidbody2D>();
         fistAttack = GetComponent<FistAttack>();
         groundChecker = GetComponentInChildren<PlayerGroundCheck>();
-	}
-	
+    }
+
     void Update()
     {
         moveInput = Input.GetAxisRaw("Horizontal");
@@ -52,15 +54,15 @@ public class PlayerMovement : MonoBehaviour {
         }
     }
 
-	void FixedUpdate ()
+    void FixedUpdate()
     {
-        animator.SetBool("IsOnGround", groundChecker.IsGrounded());
+        animator.SetBool("IsOnGround", groundChecker.IsGrounded);
 
-        if (jump && groundChecker.IsGrounded())
+        if (jump && groundChecker.IsGrounded)
         {
             Jump();
         }
-        else if(grappled)
+        else if (grappled)
         {
             Swing();
         }
@@ -74,7 +76,7 @@ public class PlayerMovement : MonoBehaviour {
             FlipCharacter();
         }
 
-        if(!groundChecker.IsGrounded())
+        if (!groundChecker.IsGrounded)
         {
             animator.SetFloat("VerticalVelocity", rb.velocity.y);
         }
@@ -132,6 +134,11 @@ public class PlayerMovement : MonoBehaviour {
         return moveInput < 0;
     }
 
+    public void Stop()
+    {
+        rb.velocity = Vector2.zero;
+    }
+
     void FlipCharacter()
     {
         if (!fistAttack.IsPunching())
@@ -141,5 +148,10 @@ public class PlayerMovement : MonoBehaviour {
             scaler.x = -scaler.x;
             transform.localScale = scaler;
         }
+    }
+
+    public bool IsGrounded
+    {
+        get { return groundChecker.IsGrounded; }
     }
 }

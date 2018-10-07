@@ -66,14 +66,28 @@ public class PlayerDeath : MonoBehaviour {
 
     private void BlackOutOver()
     {
-        MainCamera.enabled = true;
-        LoadingScreenCamera.enabled = false;
+        if(MainCamera && LoadingScreenCamera)
+        {
+            MainCamera.enabled = true;
+            LoadingScreenCamera.enabled = false;
+        }
+        else
+        {
+            Debug.Log("One of the Cameras is missing!");
+        }
     }
 
     private void BlackOut()
     {
-        LoadingScreenCamera.enabled = true;
-        MainCamera.enabled = false;
+        if (MainCamera && LoadingScreenCamera)
+        {
+            LoadingScreenCamera.enabled = true;
+            MainCamera.enabled = false;
+        }
+        else
+        {
+            Debug.Log("One of the Cameras is missing!");
+        }
     }
 
     private void RespawnPlayer()

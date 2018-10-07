@@ -84,6 +84,16 @@ public class PlayerMovement : MonoBehaviour
         {
             animator.SetFloat("VerticalVelocity", 0);
         }
+
+        //if(rb.velocity.y > 0f)
+        //{
+        //    Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("OneWayObstacle"), true);
+        //}
+        //else
+        //{
+        //    Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Player"), LayerMask.NameToLayer("OneWayObstacle"), false);
+
+        //}
     }
 
     private void Swing()

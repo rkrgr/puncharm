@@ -9,7 +9,7 @@ public class PlayerGroundCheck : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.IsInLayer("Obstacle"))
+        if (collision.gameObject.IsInLayer("Obstacle") || collision.gameObject.IsInLayer("OneWayObstacle"))
         {
             IsGrounded = true;
         }
@@ -17,7 +17,7 @@ public class PlayerGroundCheck : MonoBehaviour {
 
     void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.IsInLayer("Obstacle"))
+        if (collision.gameObject.IsInLayer("Obstacle") || collision.gameObject.IsInLayer("OneWayObstacle"))
         {
             IsGrounded = false;
         }

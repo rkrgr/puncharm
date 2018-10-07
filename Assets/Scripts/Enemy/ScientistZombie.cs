@@ -15,12 +15,11 @@ public class ScientistZombie : Enemy {
 
     public float playerDistance = 1f;
 
-    public LayerMask ground;
+    LayerMask obstacle;
 
     GameObject player;
 
     Rigidbody2D rb;
-    BoxCollider2D enemyCollider;
     Vector3 localPositionGroundLeft;
     Vector3 localPositionGroundRight;
 
@@ -33,40 +32,64 @@ public class ScientistZombie : Enemy {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         player = GameObject.FindWithTag("Player");
-        enemyCollider = GetComponent<BoxCollider2D>();
+        obstacle = LayerMask.GetMask("Obstacle");
 	}
 
     void Start()
     {
+        BoxCollider2D enemyCollider = GetComponent<BoxCollider2D>();
         float halfHorizontalLength = enemyCollider.size.x * transform.lossyScale.x / 2;
         float halfVerticalLength = enemyCollider.size.y * transform.lossyScale.y / 2;
         localPositionGroundLeft = new Vector2(-halfHorizontalLength, -halfVerticalLength);
         localPositionGroundRight = new Vector2(halfHorizontalLength, -halfVerticalLength);
     }
 	
-	void FixedUpdate () {
+	void FixedUpdate ()
+    {
         if (IsSeeingPlayer())
         {
             StartCharge();
         }
 
-        if (chargeTimeLeft > 0f) {
-            rb.velocity = new Vector2(moveDirection.x * chargeSpeed * Time.deltaTime, rb.velocity.y);
-            chargeTimeLeft -= Time.deltaTime;
+        if (IsCharging())
+        {
+            Charge();
         }
         else
         {
-            rb.velocity = new Vector2(moveDirection.x * normalSpeed * Time.deltaTime, rb.velocity.y);
+            Move();
         }
 
+        Debug.DrawRay(transform.position + localPositionGroundRight, moveDirection);
         if (IsMovingLeft() && (!HitGroundLeft() && HitGroundRight() || HitWallLeft())
             || IsMovingRight() && (HitGroundLeft() && !HitGroundRight() || HitWallRight()))
         {
             FlipMoveDirection();
             FlipCharacter();
-            chargeTimeLeft = 0f;
+            StopCharging();
         }
-	}
+    }
+
+    private void StopCharging()
+    {
+        chargeTimeLeft = 0f;
+    }
+
+    private void Move()
+    {
+        rb.velocity = new Vector2(moveDirection.x * normalSpeed * Time.deltaTime, rb.velocity.y);
+    }
+
+    private void Charge()
+    {
+        rb.velocity = new Vector2(moveDirection.x * chargeSpeed * Time.deltaTime, rb.velocity.y);
+        chargeTimeLeft -= Time.deltaTime;
+    }
+
+    private bool IsCharging()
+    {
+        return chargeTimeLeft > 0f;
+    }
 
     private void StartCharge()
     {
@@ -83,22 +106,22 @@ public class ScientistZombie : Enemy {
 
     bool HitGroundLeft()
     {
-        return Physics2D.Raycast(transform.position + localPositionGroundLeft, Vector2.down, 0.1f, ground).collider != null;
+        return Physics2D.Raycast(transform.position + localPositionGroundLeft, Vector2.down, 0.1f, obstacle).collider != null;
     }
 
     bool HitGroundRight()
     {
-        return Physics2D.Raycast(transform.position + localPositionGroundRight, Vector2.down, 0.1f, ground).collider != null;
+        return Physics2D.Raycast(transform.position + localPositionGroundRight, Vector2.down, 0.1f, obstacle).collider != null;
     }
 
     bool HitWallLeft()
     {
-        return Physics2D.Raycast(transform.position + localPositionGroundLeft, moveDirection, 0.1f, ground).collider != null;
+        return Physics2D.Raycast(transform.position + localPositionGroundLeft, moveDirection, 0.1f, obstacle).collider != null;
     }
 
     bool HitWallRight()
     {
-        return Physics2D.Raycast(transform.position + localPositionGroundRight, moveDirection, 0.1f, ground).collider != null;
+        return Physics2D.Raycast(transform.position + localPositionGroundRight, moveDirection, 0.1f, obstacle).collider != null;
     }
 
     bool IsMovingLeft()

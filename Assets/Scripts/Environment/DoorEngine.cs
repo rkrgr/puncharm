@@ -3,16 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Renderer))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class DoorEngine : SwitchableObject {
 
+    public Sprite openedSprite;
+    public Sprite closedSprite;
+
     private Collider2D doorCollider;
-    private Renderer doorRenderer;
+    private SpriteRenderer doorRenderer;
 
     private void Awake()
     {
         doorCollider = GetComponent<Collider2D>();
-        doorRenderer = GetComponent<Renderer>();
+        doorRenderer = GetComponent<SpriteRenderer>();
     }
 
     public override void Switch(bool active, GameObject sender)
@@ -20,17 +23,23 @@ public class DoorEngine : SwitchableObject {
         if(active)
         {
             DeactivateCollider();
-            SwitchSpriteToDeactivated();
+            SwitchSpriteToOpened();
         }
         else
         {
             ActivateCollider();
+            SwitchSpriteToClosed();
         }
     }
 
-    private void SwitchSpriteToDeactivated()
+    private void SwitchSpriteToClosed()
     {
-        doorRenderer.enabled = false;
+        doorRenderer.sprite = closedSprite;
+    }
+
+    private void SwitchSpriteToOpened()
+    {
+        doorRenderer.sprite = openedSprite;
     }
 
     private void ActivateCollider()

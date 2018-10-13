@@ -101,14 +101,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 30
+  moveSpeed: 30
   aggroRange: 7
   normalSpeed: 30
   chargeSpeed: 200
   chargeTime: 1
   playerDistance: 1
-  obstacle:
-    serializedVersion: 2
-    m_Bits: 512
 --- !u!114 &114863083100829132
 MonoBehaviour:
   m_ObjectHideFlags: 1

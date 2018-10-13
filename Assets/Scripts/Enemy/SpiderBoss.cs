@@ -17,19 +17,17 @@ public class SpiderBoss : Enemy {
 
     bool jump = false;
 
-    Rigidbody2D rb;
-
     GameObject player;
 
     protected override void Awake()
     {
         base.Awake();
-        rb = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         BoxCollider2D col = GetComponent<BoxCollider2D>();
         colliderHalfWidth = col.size.x * transform.lossyScale.x / 2;
         colliderHalfHeight = col.size.y * transform.lossyScale.y / 2;

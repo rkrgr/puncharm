@@ -101,6 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 30
+  moveSpeed: 20
   grenade: {fileID: 50904012055111626, guid: a6715c10f0f1bd74a94c44d46c50edb7, type: 2}
   grenadeSpeed: 17
   attackCooldown: 3

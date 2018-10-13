@@ -104,6 +104,7 @@ MonoBehaviour:
   grenade: {fileID: 50904012055111626, guid: a6715c10f0f1bd74a94c44d46c50edb7, type: 2}
   grenadeSpeed: 17
   attackCooldown: 3
+  player: {fileID: 0}
 --- !u!114 &114964461136005858
 MonoBehaviour:
   m_ObjectHideFlags: 1
